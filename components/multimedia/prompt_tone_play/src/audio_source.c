@@ -115,6 +115,7 @@ bk_err_t audio_source_open(audio_source_t *source)
         return BK_FAIL;
     }
 
+    // vfs_source_open -> source_vfs.c 中
     ret = source->ops->audio_source_open(source, &source->config);
     if (ret != BK_OK)
     {
@@ -162,6 +163,8 @@ int audio_source_set_url(audio_source_t *source, url_info_t *url_info)
         return BK_FAIL;
     }
 
+    // NOTE
+    // NOTE CPU1 中定义 CONFIG_PROMPT_TONE_SOURCE_VFS，用的VFS  -> source_cfs.c 
     return source->ops->audio_source_set_url(source, url_info);
 }
 

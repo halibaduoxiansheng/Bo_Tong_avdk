@@ -125,6 +125,7 @@ bk_err_t audio_codec_open(audio_codec_t *codec)
         return BK_FAIL;
     }
 
+    // audio_codec_create 里面的 temp_ops 所来函数的 （根据mp3,pcm,wav等格式 有自己的 open、write、close、ctrl）
     ret = codec->ops->open(codec, &codec->config);
     if (ret != BK_OK)
     {
@@ -176,6 +177,7 @@ bk_err_t audio_codec_ctrl(audio_codec_t *codec, audio_codec_ctrl_op_t op, void *
         return BK_FAIL;
     }
 
+    // audio_codec_create 里面的 temp_ops 所来函数的 （根据mp3,pcm,wav等格式 有自己的 open、write、close、ctrl）
     ret = codec->ops->ctrl(codec, op, params);
     if (ret != BK_OK)
     {

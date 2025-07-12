@@ -234,7 +234,7 @@ static ringbuf_handle_t gl_prompt_tone_rb = NULL;
 static bool gl_prompt_tone_play_flag = false;
 static prompt_tone_pool_empty_notify gl_prompt_tone_empty_notify = NULL;
 static void *gl_notify_user_data = NULL;
-static prompt_tone_play_handle_t gl_prompt_tone_play_handle = NULL;
+static prompt_tone_play_handle_t gl_prompt_tone_play_handle = NULL; /* NOTE sd卡内容编译句柄 */
 static url_info_t prompt_tone_info = {0};
 
 #if CONFIG_PROMPT_TONE_SOURCE_VFS
@@ -3372,7 +3372,7 @@ static bk_err_t aud_tras_drv_mic_set_samp_rate(uint32_t samp_rate)
 }
 
 #if CONFIG_AUD_INTF_SUPPORT_PROMPT_TONE
-/* NOTE voc init 唯一调用 传的 NULL */
+/* NOTE voc init 唯一调用 传的 NULL 初始化提示音 */
 static bk_err_t aud_tras_drv_prompt_tone_play_open(url_info_t *prompt_tone)
 {
     LOGI("%s\n", __func__);
@@ -3381,7 +3381,7 @@ static bk_err_t aud_tras_drv_prompt_tone_play_open(url_info_t *prompt_tone)
 #if CONFIG_PROMPT_TONE_CODEC_MP3
     //TODO
 #endif
-#if CONFIG_PROMPT_TONE_CODEC_WAV
+#if CONFIG_PROMPT_TONE_CODEC_WAV // NOTE CPU1 上配置的 CONFIG_PROMPT_TONE_CODEC_WAV
     prompt_tone_play_cfg_t config = DEFAULT_VFS_WAV_PROMPT_TONE_PLAY_CONFIG();
 #endif
 #if CONFIG_PROMPT_TONE_CODEC_PCM
@@ -4109,7 +4109,7 @@ static bk_err_t aud_tras_drv_voc_init(aud_intf_voc_config_t* voc_cfg)
         goto aud_tras_drv_voc_init_exit;
     }
 
-    /* BUG 传 NULL 不会有任何操作 */
+    /* NOTE 确定 到底全是 wav存储的提示音 还是 其余格式的 初始化确认配置*/
     ret = aud_tras_drv_prompt_tone_play_open(NULL);
     if (ret != BK_OK)
     {

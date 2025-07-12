@@ -265,7 +265,7 @@ bk_err_t prompt_tone_play_open(prompt_tone_play_handle_t handle)
 
     aud_tras_drv_register_prompt_tone_pool_empty_notify(prompt_tone_pool_empty_notify_cb, handle);
 
-    ret = audio_codec_open(handle->codec);
+    ret = audio_codec_open(handle->codec); // NOTE malloc room
     if (ret != BK_OK)
     {
         LOGE("%s, %d, audio codec open fail\n", __func__, __LINE__);
@@ -363,6 +363,7 @@ bk_err_t prompt_tone_play_set_url(prompt_tone_play_handle_t handle, url_info_t *
 
     if (handle->source)
     {
+        // source_vfs.c
         return audio_source_set_url(handle->source, url_info);
     }
     else
@@ -405,7 +406,7 @@ bk_err_t prompt_tone_play_start(prompt_tone_play_handle_t handle)
 
     LOGI("%s\n", __func__);
 
-    if (handle->codec)
+    if (handle->codec) // audio_codec_create 中设置
     {
         ret = audio_codec_ctrl(handle->codec, AUDIO_CODEC_CTRL_START, NULL);
         if (ret != BK_OK)

@@ -77,9 +77,9 @@ typedef struct prompt_tone_play *prompt_tone_play_handle_t;
     .source_cfg = {                                     \
         .url = NULL,                                    \
         .frame_size = DEFAULT_FRAME_SIZE,               \
-        .data_handle = NULL,                            \
+        .data_handle = NULL,                            \ // codec_out_data_handle_cb
         .notify = NULL,                                 \
-        .usr_data = NULL,                               \
+        .usr_data = NULL,                               \ // prompt_tone_play_handle_t
     },                                                  \
     .codec_type = AUDIO_CODEC_WAV,                      \
     .codec_cfg = {                                      \
